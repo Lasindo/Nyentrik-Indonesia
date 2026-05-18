@@ -2,1017 +2,831 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Nyentrik Indonesia | Kerajinan Lukis Berkualitas</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Playfair+Display:wght@700&family=Playfair+Display:ital@1&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
     <style>
         :root {
-            --primary: #D35400;
-            --primary-light: #E67E22;
-            --accent: #F1C40F; 
-            --dark: #2C3E50; 
-            --light: #FAFAFA;
-            --text-muted: #7F8C8D;
-            --shadow: 0 4px 15px rgba(0,0,0,0.05);
-            --border-radius: 12px;
+            --primary-color: #2D3436;
+            --accent-color: #D4AF37;
+            --bg-body: #F9F9F9;
+            --white: #ffffff;
+            --text-muted: #636e72;
+            --wa-green: #25D366;
+            --transition-smooth: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Plus Jakarta Sans', sans-serif;
+        * { box-sizing: border-box;
+            margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+        html, body { 
+            overflow-x: hidden;
+            width: 100%;
+            position: relative;
         }
 
         body {
-            background-color: var(--light);
-            color: var(--dark);
-            line-height: 1.6;
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--bg-body);
+            color: var(--primary-color);
+            line-height: 1.5;
+        }
+
+        body.modal-open {
+            overflow: hidden;
+        }
+
+        @keyframes fadeInPage {
+            from { opacity: 0;
+            transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0);
+            }
+        }
+
+        @keyframes waWiggle {
+            0%, 90%, 100% { transform: rotate(0) scale(1);
+            }
+            92% { transform: rotate(-15deg) scale(1.1);
+            }
+            94% { transform: rotate(15deg) scale(1.1);
+            }
+            96% { transform: rotate(-15deg) scale(1.1);
+            }
+            98% { transform: rotate(15deg) scale(1.1);
+            }
         }
 
         header {
-            background: #ffffff;
+            background-color: var(--primary-color);
+            padding: 10px 5%;
             position: sticky;
             top: 0;
             z-index: 1000;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            box-shadow: 0 2px 15px rgba(0,0,0,0.2);
         }
 
-        .navbar {
-            max-width: 1200px;
-            margin: 0 auto;
+        .header-main {
             display: flex;
+            align-items: center;
             justify-content: space-between;
-            align-items: center;
-            padding: 18px 20px;
+            gap: 20px;
         }
 
-        .brand-logo {
+        .logo {
             font-family: 'Playfair Display', serif;
-            font-size: 24px;
-            font-weight: 700;
-            color: var(--primary);
+            color: var(--accent-color);
+            font-size: 1.6rem;
+            font-weight: bold;
             text-decoration: none;
-            letter-spacing: 0.5px;
-            cursor: pointer;
+            white-space: nowrap;
+            flex-shrink: 0;
         }
 
-        .nav-menu {
+        .search-container {
+            flex-grow: 1;
             display: flex;
-            list-style: none;
-            gap: 25px;
+            background: var(--white);
+            border-radius: 8px;
+            overflow: hidden;
+            max-width: 500px;
+            transition: var(--transition-smooth);
         }
 
-        .nav-menu a {
-            text-decoration: none;
-            color: var(--dark);
-            font-weight: 600;
-            font-size: 15px;
-            transition: color 0.3s;
+        .search-container input {
+            border: none;
+            padding: 10px 15px;
+            width: 100%;
+            outline: none;
+            font-size: 0.9rem;
+        }
+
+        .search-container button {
+            background: var(--accent-color);
+            border: none;
+            padding: 0 18px;
+            color: var(--white);
             cursor: pointer;
         }
 
-        .nav-menu a:hover, .nav-menu a.active {
-            color: var(--primary);
-        }
+        .nav-menu { display: flex;
+            gap: 20px; align-items: center; flex-shrink: 0; }
 
-        container {
-            display: block;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 40px 20px;
-            min-height: 80vh;
-        }
-
-        .page {
-            display: none;
-        }
-
-        .page.active-page {
-            display: block;
-            animation: fadeIn 0.5s ease;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .hero-banner {
-            width: 100%;
-            height: 500px;
-            margin-bottom: 40px;
-            border-radius: var(--border-radius);
-            overflow: hidden;
-            box-shadow: var(--shadow);
-        }
-
-        .hero-banner img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .mag-title {
-            font-family: 'Playfair Display', serif;
-            font-size: 48px;
-            line-height: 1.2;
-            text-align: center;
-            margin-bottom: 20px;
-            color: var(--dark);
-        }
-
-        .mag-title span {
-            color: var(--primary);
-            font-style: italic;
-        }
-
-        .mag-excerpt {
-            font-size: 20px;
-            color: var(--text-muted);
-            text-align: center;
-            max-width: 800px;
-            margin: 0 auto 60px auto;
-            border-bottom: 3px solid var(--accent);
-            padding-bottom: 20px;
-        }
-
-        .mag-article-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 50px;
+        .nav-link {
+            color: var(--white);
+            text-decoration: none;
+            font-size: 0.85rem;
+            display: flex;
+            flex-direction: column;
             align-items: center;
-            margin-bottom: 80px;
+            transition: var(--transition-smooth);
         }
 
-        .mag-article-img {
-            width: 100%;
-            height: 400px;
-            border-radius: var(--border-radius);
-            overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        .nav-link i { font-size: 1.2rem; margin-bottom: 3px; color: var(--accent-color);
+        }
+        .nav-link:hover { transform: translateY(-3px); color: var(--accent-color);
         }
 
-        .mag-article-img img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.5s;
-        }
-
-        .mag-article-img:hover img {
-            transform: scale(1.05);
-        }
-
-        .mag-article-text h2 {
-            font-family: 'Playfair Display', serif;
-            font-size: 32px;
-            margin-bottom: 20px;
-            color: var(--primary);
-        }
-
-        .mag-article-text p {
-            font-size: 16px;
-            color: #444;
-            margin-bottom: 18px;
-            text-align: justify;
-            line-height: 1.8;
-        }
-
-        .section-divider {
-            text-align: center;
-            margin: 60px 0;
-            font-size: 24px;
-            color: var(--primary-light);
-        }
-
-        .magazine-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 30px;
-            margin-bottom: 40px;
-        }
-
-        .mag-card {
-            background: white;
-            border: 1px solid #EAEAEA;
-            padding: 20px;
-            box-shadow: var(--shadow);
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background: var(--white);
+            border: 1px solid var(--accent-color);
+            color: var(--primary-color);
             border-radius: 8px;
+            text-decoration: none;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            transition: var(--transition-smooth);
+            cursor: pointer;
+        }
+        .back-btn:hover { background: var(--accent-color); color: var(--white);
         }
 
-        .mag-img-wrapper {
-            position: relative;
-            overflow: hidden;
-            margin-bottom: 15px;
-            height: 250px;
-            background: #eee;
-            border-radius: 6px;
-        }
-
-        .mag-img-wrapper img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .mag-tag {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            background: var(--primary);
-            color: white;
-            padding: 4px 10px;
-            font-size: 11px;
-            text-transform: uppercase;
+        .product-tag-row {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 4px;
+            font-size: 0.7rem;
             font-weight: 700;
-            letter-spacing: 1px;
+        }
+        .tag-best {
+            color: #e67e22;
+            background: rgba(230, 126, 34, 0.1);
+            padding: 2px 6px;
             border-radius: 4px;
         }
-
-        .mag-card h3 {
-            font-family: 'Playfair Display', serif;
-            font-size: 22px;
-            margin-bottom: 10px;
-        }
-
-        .mag-card p {
-            font-size: 14px;
+        .tag-sold {
             color: var(--text-muted);
-            text-align: justify;
+            font-weight: 500;
         }
 
-        .marketplace-grid {
+        .view-page { display: none;
+            min-height: 85vh; padding-bottom: 50px; width: 100%; }
+        .view-page.active { 
+            display: block;
+            animation: fadeInPage 0.4s ease forwards;
+        }
+
+        .banner-section {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            grid-template-columns: 2fr 1fr;
+            grid-template-rows: 1fr 1fr;
+            gap: 12px;
+            padding: 20px 5%;
+            height: 380px;
+        }
+
+        .banner-item {
+            background-size: cover;
+            background-position: center;
+            border-radius: 12px;
+            display: flex;
+            align-items: flex-end;
+            padding: 25px;
+            color: white;
+            text-decoration: none;
+            position: relative;
+            overflow: hidden;
+            transition: var(--transition-smooth);
+        }
+
+        .banner-item::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(transparent, rgba(0,0,0,0.8));
+        }
+
+        .banner-item span { position: relative;
+            z-index: 1; font-weight: 700; font-size: 1.3rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .banner-1 { grid-row: span 2; background-image: url('https://lh3.googleusercontent.com/d/1ztGKHq7UiJKmN0_ek4Mudw1Zys_9SLUT?w=800');
+        }
+        .banner-2 { background-image: url('https://lh3.googleusercontent.com/d/121-WE8YF9quyG-Z1BXCVnU-7rXmQClID?w=500');
+        }
+        .banner-3 { background-image: url('https://lh3.googleusercontent.com/d/14Uy02OFoZ0zPMo9Mpxxz-2cpq2u2IFHp?w=500');
+        }
+
+        .categories-container {
+            background: var(--white);
+            padding: 20px 0;
+            display: flex;
+            justify-content: center;
+            overflow-x: auto;
+            scrollbar-width: none;
+            width: 100%;
+        }
+        
+        .categories-container::-webkit-scrollbar { display: none;
+        }
+
+        .categories-inner {
+            display: flex;
+            padding: 0 5%;
+            gap: 20px;
+        }
+
+        .cat-item { text-decoration: none; color: var(--primary-color);
+            text-align: center; min-width: 75px; transition: var(--transition-smooth); }
+        .cat-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 18px;
+            background: #f8f9fa;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 8px auto;
+            font-size: 1.4rem;
+            color: var(--primary-color);
+            transition: var(--transition-smooth);
+            border: 1px solid #eee;
+        }
+
+        .cat-item:hover .cat-icon { background: var(--accent-color);
+            color: white; transform: translateY(-5px); }
+        .cat-item span { font-weight: 600; font-size: 0.8rem;
+        }
+
+        .main-content { padding: 0 5%;
+            width: 100%; }
+        .section-title {
+            margin-bottom: 20px;
+            border-left: 5px solid var(--accent-color);
+            padding-left: 12px;
+            font-size: 1.2rem;
+            text-transform: uppercase;
+            font-weight: 700;
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
             gap: 20px;
         }
 
         .product-card {
-            background: white;
-            border-radius: 8px;
+            background: var(--white);
+            border-radius: 10px;
             overflow: hidden;
-            border: 1px solid #E5E7EB;
-            transition: transform 0.2s, box-shadow 0.2s;
+            text-decoration: none;
+            color: inherit;
+            transition: var(--transition-smooth);
+            border: 1px solid #efefef;
             cursor: pointer;
         }
 
-        .product-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 6px 15px rgba(0,0,0,0.1);
-            border-color: var(--primary-light);
+        .product-card:hover { transform: translateY(-5px); box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        }
+        .product-img { width: 100%; aspect-ratio: 1/1; object-fit: cover;
+        }
+        .product-info { padding: 12px;
+        }
+        .product-name { font-size: 0.9rem; height: 40px; overflow: hidden; margin-bottom: 5px; font-weight: 500;
+        }
+        .price-req { color: var(--accent-color); font-weight: 700; font-size: 0.95rem;
         }
 
-        .prod-img-box {
+        .page-card {
+            background: white;
+            max-width: 800px;
+            margin: 30px auto;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.05);
+            text-align: center;
+        }
+
+        .social-header { display: flex; justify-content: center; gap: 15px; margin-bottom: 25px;
+        }
+        .social-link { 
+            width: 45px;
+            height: 45px; border-radius: 50%; background: var(--primary-color);
+            color: white; display: flex; align-items: center; justify-content: center;
+            font-size: 1.3rem; transition: var(--transition-smooth);
+        }
+        .social-link:hover { background: var(--accent-color); transform: scale(1.1);
+        }
+
+        .order-box { border: 1px solid #f0f0f0; padding: 25px; border-radius: 15px; background: #fafafa;
+        }
+        .wa-animate { font-size: 4rem; color: var(--wa-green); animation: waWiggle 4s infinite; margin-bottom: 15px;
+        }
+
+        .map-box {
+            background: var(--primary-color);
+            color: white; padding: 30px; border-radius: 15px;
+            margin-top: 25px; cursor: pointer; transition: var(--transition-smooth);
+        }
+
+        .about-slider-wrap {
             width: 100%;
-            height: 220px;
-            background: #f0f0f0;
+            height: 350px;
+            border-radius: 15px;
+            overflow: hidden;
+            margin-bottom: 20px;
+            position: relative;
         }
-
-        .prod-img-box img {
+        .about-slider-track {
+            display: flex;
+            height: 100%;
+            transition: transform 0.6s ease-in-out;
+        }
+        .about-slider-track img {
             width: 100%;
             height: 100%;
             object-fit: cover;
+            flex-shrink: 0;
+        }
+        .btn-journey {
+            display: inline-block;
+            background: var(--primary-color);
+            color: var(--white);
+            padding: 12px 30px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+            letter-spacing: 1px;
+            margin: 15px 0 35px 0;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+            transition: var(--transition-smooth);
+            border: 1px solid transparent;
+        }
+        .btn-journey:hover {
+            background: var(--white);
+            color: var(--accent-color);
+            border: 1px solid var(--accent-color);
+            transform: translateY(-3px);
         }
 
-        .prod-info {
-            padding: 12px;
+        .magazine-row {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            margin-bottom: 40px;
+            text-align: left;
+        }
+        .magazine-row.reverse {
+            flex-direction: row-reverse;
+        }
+        .mag-img {
+            flex: 1;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+        }
+        .mag-text {
+            flex: 1;
+            font-size: 0.95rem;
+            line-height: 1.8;
+            color: #444;
+        }
+        .mag-text h3 {
+            font-family: 'Playfair Display', serif;
+            color: var(--accent-color);
+            margin-bottom: 15px;
+            font-size: 1.4rem;
         }
 
-        .prod-title {
-            font-size: 14px;
-            color: var(--dark);
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-            height: 40px;
-            margin-bottom: 5px;
-            font-weight: 500;
+        .museum-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px 5%;
         }
-
-        .prod-price {
-            color: var(--primary);
-            font-weight: 700;
-            font-size: 16px;
+        .museum-item {
+            background: var(--white);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.06);
+            margin-bottom: 35px;
+            text-align: center;
+        }
+        .museum-item.photo-only {
+            padding: 10px;
+        }
+        .museum-img {
+            width: 100%;
+            border-radius: 10px;
+            border: 1px solid #eaeaea;
+            margin-bottom: 15px;
+            object-fit: cover;
+            max-height: 400px;
+        }
+        .photo-only .museum-img {
+            margin-bottom: 0;
+        }
+        .museum-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.2rem;
+            color: var(--primary-color);
             margin-bottom: 8px;
         }
-
-        .prod-meta {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 12px;
-            color: var(--text-muted);
+        .museum-desc {
+            font-size: 0.9rem;
+            color: #666;
+            line-height: 1.7;
         }
 
-        .prod-badge {
-            background: #FEF3C7;
-            color: #D97706;
-            padding: 2px 6px;
-            border-radius: 4px;
-            font-weight: 600;
-            font-size: 10px;
+        .wa-floating {
+            position: fixed;
+            bottom: 20px; right: 20px;
+            background: var(--wa-green); color: white;
+            width: 55px; height: 55px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 28px; box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4);
+            z-index: 999; text-decoration: none;
+            animation: waWiggle 4s infinite;
         }
 
-        .shopee-detail-layout {
-            display: grid;
-            grid-template-columns: 1fr 1.2fr;
-            gap: 40px;
+        .modal {
+            display: none;
+            position: fixed; z-index: 2000; inset: 0;
+            background: rgba(0,0,0,0.85); padding: 15px; backdrop-filter: blur(4px);
+            overflow-y: auto; 
+            -webkit-overflow-scrolling: touch; 
+        }
+        .modal-content {
             background: white;
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: var(--shadow);
+            max-width: 800px; margin: 20px auto; border-radius: 15px; 
+            overflow: hidden; display: grid; grid-template-columns: 1fr 1fr; position: relative;
         }
+        .close-btn { position: absolute; right: 15px; top: 10px; font-size: 1.8rem; cursor: pointer;
+            color: #333; z-index: 10; }
 
-        .detail-img-side img {
-            width: 100%;
-            border-radius: 8px;
-            border: 1px solid #EAEAEA;
-        }
-
-        .detail-info-side h2 {
-            font-size: 24px;
-            margin-bottom: 15px;
-            font-weight: 600;
-        }
-
-        .detail-price-box {
-            background: #FAFAFA;
-            padding: 15px 20px;
-            font-size: 28px;
-            color: var(--primary);
-            font-weight: 700;
-            margin-bottom: 25px;
-            border-radius: 4px;
-        }
-
-        .detail-desc-box {
-            margin-bottom: 30px;
-        }
-
-        .detail-desc-box h3 {
-            font-size: 16px;
-            margin-bottom: 10px;
-            color: var(--text-muted);
-            border-bottom: 1px solid #EEE;
-            padding-bottom: 5px;
-        }
-
-        .detail-desc-box p {
-            font-size: 15px;
-            color: #4A4A4A;
-            white-space: pre-line;
-        }
-
-        .btn-order-now {
-            display: inline-block;
-            background: var(--primary);
-            color: white;
-            padding: 14px 30px;
-            border-radius: 4px;
-            text-decoration: none;
-            font-weight: 600;
-            transition: background 0.3s;
-            border: none;
-            cursor: pointer;
-        }
-
-        .btn-order-now:hover {
-            background: var(--primary-light);
-        }
-
-        .back-link {
-            display: inline-block;
-            margin-bottom: 20px;
-            color: var(--primary);
-            text-decoration: none;
-            font-weight: 600;
-            cursor: pointer;
-        }
-
-        .about-wrapper {
-            max-width: 900px;
-            margin: 0 auto;
-        }
-
-        .about-wrapper h2 {
-            font-family: 'Playfair Display', serif;
-            font-size: 36px;
-            margin-bottom: 20px;
-            text-align: center;
-        }
-
-        .about-text-header {
-            font-size: 16px;
-            color: #555;
-            margin-bottom: 40px;
-            text-align: justify;
-        }
-
-        .sosmed-section {
-            border-top: 1px solid #EAEAEA;
-            padding-top: 30px;
-            text-align: center;
-        }
-
-        .sosmed-section h3 {
-            margin-bottom: 20px;
-            font-size: 18px;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-        }
-
-        .sosmed-buttons {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-        }
-
-        .sosmed-btn {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background: white;
-            border: 1px solid #DDD;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 20px;
-            color: var(--dark);
-            text-decoration: none;
-            transition: all 0.3s;
-        }
-
-        .sosmed-btn:hover {
-            background: var(--primary);
-            color: white;
-            border-color: var(--primary);
-            transform: scale(1.1);
-        }
-
-        .buy-card {
-            max-width: 550px;
-            margin: 40px auto;
-            background: white;
-            border-radius: var(--border-radius);
-            box-shadow: var(--shadow);
-            padding: 40px;
-            text-align: center;
-            border: 1px solid #EAEAEA;
-        }
-
-        .buy-icon {
-            font-size: 50px;
-            color: #25D366; 
-            margin-bottom: 20px;
-        }
-
-        .buy-card h2 {
-            margin-bottom: 15px;
-            font-size: 24px;
-        }
-
-        .buy-card p {
-            color: var(--text-muted);
-            margin-bottom: 30px;
-            font-size: 15px;
-        }
-
-        .contact-box {
-            background: #F4F6F7;
-            padding: 20px;
-            border-radius: 8px;
-            margin-bottom: 30px;
-        }
-
-        .contact-name {
-            font-weight: 700;
-            font-size: 18px;
-            color: var(--dark);
-            margin-bottom: 5px;
-        }
-
-        .contact-number {
-            font-size: 20px;
-            color: var(--primary);
-            font-weight: 700;
-        }
-
-        .address-card {
-            max-width: 700px;
-            margin: 0 auto;
-            background: white;
-            padding: 35px;
-            border-radius: var(--border-radius);
-            box-shadow: var(--shadow);
-            border: 1px solid #EAEAEA;
-        }
-
-        .address-card h2 {
-            font-family: 'Playfair Display', serif;
-            font-size: 28px;
-            margin-bottom: 20px;
-        }
-
-        .address-details {
-            display: flex;
-            gap: 15px;
-            margin-bottom: 25px;
-            font-size: 16px;
-            color: #4A4A4A;
-        }
-
-        .address-details i {
-            color: var(--primary);
-            font-size: 20px;
-            margin-top: 4px;
-        }
-
-        .map-placeholder {
-            width: 100%;
-            height: 350px;
-            background: #E5E7EB;
-            border-radius: 6px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--text-muted);
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        footer {
-            background: #1A252F;
-            color: #A6ACAF;
-            text-align: center;
-            padding: 25px;
-            font-size: 14px;
-            margin-top: 60px;
-        }
-
-        /* OPTIMISASI MOBILE (HANDPHONE) */
         @media (max-width: 768px) {
-            container {
-                padding: 20px 12px;
+            header { padding: 10px 4%;
             }
-
-            .navbar { 
-                flex-direction: column;
-                gap: 12px; 
-                padding: 12px 10px;
+            .header-main { display: flex; flex-wrap: wrap; justify-content: space-between;
+            gap: 10px; }
+            .logo { order: 1; font-size: 1.25rem;
             }
-            .nav-menu {
-                gap: 15px;
+            .nav-menu { order: 2; gap: 15px;
             }
-            .nav-menu a {
-                font-size: 14px;
+            .nav-link i { font-size: 1.1rem;
             }
-
-            .hero-banner { 
-                height: 240px;
-                margin-bottom: 25px;
+            .nav-link span { display: none;
+            } 
+            .search-container { order: 3; max-width: none;
+            width: 100%; margin-top: 5px; }
+            .categories-container { justify-content: flex-start;
             }
-            .mag-title { 
-                font-size: 28px;
+            .banner-section { grid-template-columns: 1fr; height: auto;
+            padding: 15px 4%; gap: 8px; }
+            .banner-1 { height: 160px;
             }
-            .mag-excerpt {
-                font-size: 15px;
-                margin-bottom: 40px;
+            .banner-2, .banner-3 { height: 90px;
             }
-
-            .mag-article-row { 
-                grid-template-columns: 1fr;
-                gap: 20px;
-                margin-bottom: 60px;
-                display: flex;
-                flex-direction: column; 
+            .categories-inner { gap: 12px; padding: 0 4%;
             }
-
-            .mag-article-row:nth-child(even) {
-                flex-direction: column;
+            .cat-icon { width: 48px; height: 48px; font-size: 1rem;
+            }
+            .product-grid { grid-template-columns: 1fr 1fr; gap: 10px;
+            }
+            .page-card { margin: 20px 4%; padding: 20px;
+            }
+            .modal-content { grid-template-columns: 1fr; margin: 20px auto 40px auto; 
             }
             
-            .mag-article-img { 
-                height: 250px;
-                order: 1;
-            }
-            
-            .mag-article-text {
-                order: 2;
-            }
-
-            .mag-article-text h2 {
-                font-size: 22px;
-                margin-bottom: 12px;
-                text-align: center;
-            }
-            .mag-article-text p {
-                font-size: 14px;
-                margin-bottom: 15px;
-                line-height: 1.6;
-                text-align: justify;
-            }
-            .section-divider {
-                margin: 35px 0;
-            }
-
-            .magazine-grid { 
-                grid-template-columns: 1fr;
-                gap: 20px;
-            }
-            .mag-img-wrapper {
-                height: 200px;
-            }
-
-            .marketplace-grid {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 10px; 
-            }
-            .prod-img-box {
-                height: 160px;
-            }
-            .prod-info {
-                padding: 8px;
-            }
-            .prod-title {
-                font-size: 12px;
-                height: 34px;
-                line-height: 1.4;
-            }
-            .prod-price {
-                font-size: 14px;
-                margin-bottom: 4px;
-            }
-            .prod-meta {
-                font-size: 10px;
-            }
-
-            .shopee-detail-layout { 
-                grid-template-columns: 1fr;
-                padding: 15px;
-            }
-            .detail-info-side h2 {
-                font-size: 18px;
-                margin-top: 15px;
-            }
-            .detail-price-box {
-                font-size: 22px;
-                padding: 10px;
-            }
-            
-            .about-wrapper h2 {
-                font-size: 24px;
-                margin-bottom: 12px;
-            }
-            .about-text-header {
-                font-size: 13px;
-                line-height: 1.6;
-                margin-bottom: 30px;
-            }
-            
-            .address-card, .buy-card {
-                padding: 20px 15px;
-            }
-            .map-placeholder {
-                height: 220px;
+            .magazine-row, .magazine-row.reverse { flex-direction: column;
+            gap: 15px; text-align: center; margin-bottom: 30px;}
+            .about-slider-wrap { height: 200px;
             }
         }
     </style>
 </head>
 <body>
 
+    <a href="#order" id="waFloat" class="wa-floating">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
     <header>
-        <div class="navbar">
-            <a onclick="navigateTo('beranda')" class="brand-logo">Nyentrik Indonesia</a>
-            <ul class="nav-menu">
-                <li><a id="nav-beranda" onclick="navigateTo('beranda')" class="active">Beranda</a></li>
-                <li><a id="nav-produk" onclick="navigateTo('produk')">Produk</a></li>
-                <li><a id="nav-tentang" onclick="navigateTo('tentang')">Tentang</a></li>
-                <li><a id="nav-beli" onclick="navigateTo('beli')">Beli</a></li>
-                <li><a id="nav-alamat" onclick="navigateTo('alamat')">Alamat</a></li>
-            </ul>
+        <div class="header-main">
+            <a href="#home" class="logo">Nyentrik Indonesia</a>
+            <div class="search-container">
+                <input type="text" id="searchInput" placeholder="Cari media lukis (kayu, kain, cangkir)...">
+  
+               <button onclick="handleSearch()"><i class="fa fa-search"></i></button>
+            </div>
+            <div class="nav-menu">
+                <a href="#about" class="nav-link"><i class="fa fa-info-circle"></i><span>Tentang</span></a>
+                <a href="#order" class="nav-link"><i class="fab fa-whatsapp"></i><span>Order</span></a>
+                <a href="#address" 
+class="nav-link"><i class="fa fa-map-location-dot"></i><span>Alamat</span></a>
+            </div>
         </div>
     </header>
 
-    <container>
+    <div id="home" class="view-page active">
+        <section class="banner-section">
+            <a href="#search=Enamel" class="banner-item banner-1"><span>Populer di Kalangan Pembeli</span></a>
+            <a href="#category=Kayu" class="banner-item banner-2"><span>Media Kayu Pilihan</span></a>
+            <a href="#category=Enamel" class="banner-item banner-3"><span>Seni di Enamel</span></a>
+      
+        </section>
 
-        <div id="page-beranda" class="page active-page">
-            <div class="hero-banner">
-                <img src="https://lh3.googleusercontent.com/d/17ZCvPfWbNOCFEc3N2evdfv1fR4JI6fEn?auto=format&fit=crop&w=1400&q=80" alt="Galeri Seni Nyentrik Indonesia">
+        <section class="categories-container">
+            <div class="categories-inner">
+                <a href="#category=Keramik" class="cat-item"><div class="cat-icon"><i class="fas fa-stop"></i></div><span>Keramik</span></a>
+                <a href="#category=Kayu" class="cat-item"><div class="cat-icon"><i class="fa fa-tree"></i></div><span>Kayu</span></a>
+                <a href="#category=Kaleng" class="cat-item"><div class="cat-icon"><i class="fas fa-weight-hanging"></i></div><span>Kaleng</span></a>
+             
+                 <a href="#category=Enamel" class="cat-item"><div class="cat-icon"><i class="fa fa-mug-hot"></i></div><span>Enamel</span></a>
+                <a href="#category=Pajangan" class="cat-item"><div class="cat-icon"><i class="fas fa-palette"></i></div><span>Pajangan</span></a>
+            </div>
+        </section>
+
+        <main class="main-content">
+            <h2 class="section-title">Produk Populer</h2>
+            <div class="product-grid" id="mainGrid"></div>
+        </main>
+    </div>
+
+  
+    <div id="about" class="view-page">
+        <div class="page-card">
+            <a href="#home" class="back-btn"><i class="fa fa-arrow-left"></i> Kembali</a>
+            
+            <div class="social-header">
+                <a href="https://www.tiktok.com/@nyentrik.indonesia?_r=1&_t=ZS-96R94mt7B4u" class="social-link" style="text-decoration: none;"><i class="fab fa-tiktok"></i></a>
+                <a href="https://www.instagram.com/nyentrik_indonesia/" class="social-link" style="text-decoration: none;"><i class="fab fa-instagram"></i></a> 
+             
+            </div>
+            
+            <h1 style="font-family: 'Playfair Display';
+margin-bottom: 20px;">Nyentrik Indonesia</h1>
+
+            <div class="about-slider-wrap">
+                <div class="about-slider-track" id="aboutSlider">
+                    <img src="https://lh3.googleusercontent.com/d/16r0678qub_vczBFCHManOPhBNPzJukvs?w=800" alt="Slide 1">
+                    <img src="https://lh3.googleusercontent.com/d/12QgDn7HQo_FXF3OG72Bewbs5HkgkFqcY?w=800" alt="Slide 2">
+                    <img src="https://lh3.googleusercontent.com/d/16ufPi5hXlDAkkZaQkL9hbqRJ74io7yMm?w=800" alt="Slide 3">
+                </div>
             </div>
 
-            <h1 class="mag-title">Seni Lukis Otentik pada <span>Media Sehari-hari</span>.</h1>
-            <p class="mag-excerpt">
-                Nyentrik Indonesia: Berani Unik, Berani Nyentrik.
-            </p>
+            <a href="#journey" class="btn-journey">Perjalanan Kami <i class="fa fa-arrow-right" style="margin-left: 5px;"></i></a>
 
-            <h2 style="font-size: 22px; margin-bottom: 20px; font-weight: 600; text-align: center;">Koleksi Produk Unggulan</h2>
-            <div class="marketplace-grid" id="product-list-beranda">
-                </div>
-
-            <div class="section-divider">
-                <i class="fa-solid fa-paintbrush"></i>
-                <i class="fa-solid fa-palette" style="margin: 0 15px; font-size: 32px;"></i>
-                <i class="fa-solid fa-paintbrush"></i>
-            </div>
-
-            <h2 style="font-family: 'Playfair Display', serif; font-size: 36px; text-align: center; margin-bottom: 50px; color: var(--dark);">Rekam Jejak & Eksistensi</h2>
-            <div class="magazine-grid">
-                <div class="mag-card">
-                    <div class="mag-img-wrapper">
-                        <span class="mag-tag">Pameran</span>
-                        <img src="https://lh3.googleusercontent.com/d/17ZCvPfWbNOCFEc3N2evdfv1fR4JI6fEn?auto=format&fit=crop&w=500&q=80" alt="Pameran Kriya">
-                    </div>
-                    <h3>Mall apa gitu</h3>
-                    <p>Nyentrik Indonesia berkesempatan besar memamerkan koleksi premium eksklusif di hadapan para kolektor seni di Mall adalah pokonya.</p>
-                </div>
-                <div class="mag-card">
-                    <div class="mag-img-wrapper">
-                        <span class="mag-tag">Kolaborasi</span>
-                        <img src="https://lh3.googleusercontent.com/d/17ZCvPfWbNOCFEc3N2evdfv1fR4JI6fEn?auto=format&fit=crop&w=500&q=80" alt="Souvenir Hotel">
-                    </div>
-                    <h3>Kolaborasi bersama KAI, misalnya</h3>
-                    <p>Secara resmi dipercaya oleh PT. Kereta Api Indonesia Tut tut tut.</p>
-                </div>
-                <div class="mag-card">
-                    <div class="mag-img-wrapper">
-                        <span class="mag-tag">Edukasi</span>
-                        <img src="https://lh3.googleusercontent.com/d/17ZCvPfWbNOCFEc3N2evdfv1fR4JI6fEn?auto=format&fit=crop&w=500&q=80" alt="Workshop Seni">
-                    </div>
-                    <h3>Workshop Kelas Kreatif</h3>
-                    <p>Kami tidak hanya menjual produk, tapi juga aktif mengedukasi melalui kelas praktik melukis media kaleng dan kaca.</p>
+            <div class="magazine-row">
+                <img src="https://lh3.googleusercontent.com/d/1hwRI_CJLxkHzLViVa0NlIhtJ5YYlMw1K?w=500" class="mag-img" alt="Seni Lukis">
+                <div 
+class="mag-text">
+                    <h3>Awal Mula Karya</h3>
+                    <p>Nyentrik Indonesia bermula dari sebuah ide sederhana: mengubah barang fungsional sehari-hari menjadi karya seni yang memiliki jiwa.
+Kami percaya bahwa setiap goresan kuas membawa cerita unik bagi pemiliknya. Aku ngarang sih ini, aku kurang tau soalnya, kapan kapan kita rapat buat bahas isi halaman ini ya, hehe.</p>
                 </div>
             </div>
-        </div>
 
-        <div id="page-produk" class="page">
-            <h1 class="mag-title" style="margin-top: 20px;">Katalog <span>Nyentrik</span></h1>
-            <p class="mag-excerpt">Produk ini mengandung 0% rasa bosan dan 100% risiko jadi pusat perhatian</p>
-            <div class="marketplace-grid" id="product-list-katalog">
-                </div>
-        </div>
-
-        <div id="page-tentang" class="page">
-            <div class="about-wrapper">
-                <h2>Tentang Nyentrik Indonesia</h2>
-                <p class="about-text-header">
-                    Nyentrik Indonesia adalah sebuah jenama kriya kreatif yang berfokus pada revitalisasi produk fungsional sehari-hari menjadi media ekspresi seni rupa tingkat tinggi. Kami percaya bahwa keindahan seni tidak harus selalu tergantung kaku di dinding galeri, melainkan bisa digenggam, dinikmati sembari meminum kopi hangat, atau diletakkan di sudut ruang tamu sebagai pemantik obrolan.
-                    <br><br>
-                    Dimulai dari hal kecil, kreasi kami kini telah melanglang buana sebagai pilihan utama buah tangan (oleh-oleh) yang kaya akan narasi budaya serta kebanggaan lokal Indonesia.
-                </p>
-
-                <div class="mag-article-row">
-                    <div class="mag-article-text">
-                        <h2>Lahir dari Kegelisahan</h2>
-                        <p>Nyentrik Indonesia hadir sebagai solusi atas kejenuhan terhadap produk massal yang monoton dan tanpa karakter. Kami memahami kebutuhan individu untuk merefleksikan jati diri melalui benda fungsional sehari-hari. Produk konvensional seringkali hanya mengedepankan fungsi dasar tanpa memberikan nilai emosional maupun nilai tambah estetika pada ruang pribadi Anda.</p>
-                        <p>Kami menjawab kebutuhan akan eksklusivitas melalui karya lukis tangan pada berbagai media unik. Dengan menawarkan produk yang tidak dapat direplikasi, kami memberikan kepuasan bagi Anda untuk memiliki instrumen yang memvalidasi selera estetik Anda yang berani. Setiap unit didesain untuk memperkuat karakter gaya hidup modern yang lebih personal.</p>
-                        <p>Bagi kami, setiap produk adalah investasi emosional yang mengubah kesan rutinitas menjadi pengalaman istimewa. Kami tidak sekadar menawarkan komoditas, melainkan nilai kebanggaan bagi pemiliknya. Nyentrik Indonesia menjamin bahwa setiap pilihan Anda akan menghidupkan suasana ruang dan memberikan kebahagiaan berkelanjutan dalam setiap penggunaan. Bukankah Kamu bahagia ketika ada hal baru dalam hidupmu?</p>
-                    </div>
-                    <div class="mag-article-img">
-                        <img src="https://lh3.googleusercontent.com/d/17ZCvPfWbNOCFEc3N2evdfv1fR4JI6fEn?auto=format&fit=crop&w=800&q=80" alt="Seniman melukis detail">
-                    </div>
-                </div>
-
-                <div class="mag-article-row">
-                    <div class="mag-article-img">
-                        <img src="https://lh3.googleusercontent.com/d/17ZCvPfWbNOCFEc3N2evdfv1fR4JI6fEn?auto=format&fit=crop&w=800&q=80" alt="Detail lukisan tangan eksklusif">
-                    </div>
-                    <div class="mag-article-text">
-                        <h2>Eksklusivitas dalam Setiap Goresan</h2>
-                        <p>Pernahkah kamu merasa semua barang di rumahmu terlihat seragam dan membosankan? Di tengah kepungan produk massal yang dingin dan tanpa jiwa, kita sering kehilangan sentuhan personal pada benda yang kita pegang setiap hari.</p>
-                        <p>Nyentrik Indonesia hadir karena kami percaya bahwa setiap orang punya sisi unik yang ingin ditonjolkan.</p>
-                        <p>Kami melihat cangkir atau tumbler bukan sekadar wadah, tapi sebagai kanvas untuk menceritakan siapa kamu sebenarnya. Kami ingin mengubah kebosanan di meja makan atau ruang kerjamu menjadi sebuah pernyataan gaya hidup yang lebih berani, ekspresif, dan penuh dengan warna.</p>
-                    </div>
-                </div>
-
-                <div class="mag-article-row">
-                    <div class="mag-article-text">
-                        <h2>Memori Kolektif</h2>
-                        <p>Kami memberikanmu hak untuk menjadi satu-satunya pemilik di dunia. Karena setiap detail dikerjakan secara manual oleh tangan kreatif, kamu tidak akan pernah menemukan dua produk yang identik, bahkan jika polanya serupa.</p>
-                        <p>Ada kepuasan psikologis tersendiri saat tahu bahwa barang yang kamu gunakan adalah hasil proses kreatif yang jujur dan tidak bisa direplikasi oleh mesin pabrik manapun.</p>
-                        <p>Inilah kemewahan yang sebenarnya. Yaitu sebuah karakter unik yang menempel pada benda keseharianmu, memberikan sensasi visual yang tidak membosankan setiap kali kamu melihatnya, menyentuhnya, atau memamerkannya kepada orang lain.</p>
-                    </div>
-                    <div class="mag-article-img">
-                        <img src="https://lh3.googleusercontent.com/d/17ZCvPfWbNOCFEc3N2evdfv1fR4JI6fEn?auto=format&fit=crop&w=800&q=80" alt="Kaleng Kerupuk Lukis">
-                    </div>
-                </div>
-                
-                <div class="mag-article-row">
-                    <div class="mag-article-img">
-                        <img src="https://lh3.googleusercontent.com/d/17ZCvPfWbNOCFEc3N2evdfv1fR4JI6fEn?auto=format&fit=crop&w=800&q=80" alt="Gelas Kaca Batik">
-                    </div>
-                    <div class="mag-article-text">
-                        <h2>Solusi Kado Terbaik</h2>
-                        <p>Sebuah ruangan bisa terasa sangat berbeda hanya dengan satu sentuhan yang tepat. Produk kami, mulai dari kaleng kerupuk ikonik hingga talenan artistik, didesain untuk menjadi pusat perhatian yang memancing percakapan di rumahmu.</p>
-                        <p>Lebih dari itu, kami memberikan solusi bagi kamu yang sering bingung mencari kado yang benar-benar berkesan.</p>
-                        <p>Memberikan sesuatu dari Nyentrik Indonesia adalah cara paling cerdas untuk menunjukkan penghargaan tinggi kepada seseorang. Kamu tidak sedang memberi barang pecah belah biasa, kamu sedang memberikan perhatian dan apresiasi yang dikemas dalam bentuk karya seni praktis yang sulit dilupakan.</p>
-                    </div>
-                </div>
-
-                <div class="sosmed-section">
-                    <h3>Ikuti Media Sosial Kami</h3>
-                    <div class="sosmed-buttons">
-                        <a href="https://instagram.com" target="_blank" class="sosmed-btn"><i class="fa-brands fa-instagram"></i></a>
-                        <a href="https://tiktok.com" target="_blank" class="sosmed-btn"><i class="fa-brands fa-tiktok"></i></a>
-                        <a href="https://facebook.com" target="_blank" class="sosmed-btn"><i class="fa-brands fa-facebook-f"></i></a>
-                    </div>
+            <div class="magazine-row reverse">
+                <img src="https://lh3.googleusercontent.com/d/1BZtC-fFZ471ayz3D3BttaL26PW95LvzX?w=500" class="mag-img" alt="Media Kayu">
+                <div class="mag-text">
+           
+                 <h3>Sentuhan Personal</h3>
+                    <p>Setiap pesanan dikerjakan dengan penuh dedikasi dan cinta.
+Mulai dari media kayu, keramik (ono po gak ya?), hingga enamel, kami memastikan setiap detail lukisan dapat mewakili perasaan dan karakter dari pelanggan kami. begitulah kira kira hehe.</p>
                 </div>
             </div>
+
         </div>
+    </div>
 
-        <div id="page-detail-produk" class="page">
-            <a id="btn-back-logic" class="back-link"><i class="fa-solid fa-arrow-left"></i> Kembali</a>
-            <div class="shopee-detail-layout" id="product-detail-content">
-                </div>
+    <div id="journey" class="view-page">
+        <div class="museum-container">
+            <a href="#home" class="back-btn"><i class="fa fa-arrow-left"></i> Kembali</a>
+         
+            <h1 class="section-title" style="border: none; text-align: center; padding: 0; margin-bottom: 30px; font-family: 'Playfair Display'; font-size: 1.8rem; color: var(--accent-color);">Perjalanan Nyentrik Indonesia</h1>
+            
+            <div class="museum-item">
+                <img src="https://lh3.googleusercontent.com/d/1pFj6zHRH1pB_xRVBNhj1hewu6aZJe8_f?w=800" class="museum-img" alt="Pameran Pertama">
+                <h3 class="museum-title">Langkah Pertama (2020) aku ngarang dulu ya ini wkwk</h3>
+               
+                 <p class="museum-desc">Dimulai dari angan-angan menjadi kenyataan, logo ini bukanlah sekedar karya visual, melainkan meruppakan identitas diri dari Nyentrik Indonesia, misale.</p>
+            </div>
+
+            <div class="museum-item photo-only">
+                <img src="https://lh3.googleusercontent.com/d/16r0678qub_vczBFCHManOPhBNPzJukvs?w=800" class="museum-img" alt="Karya Estetik">
+            </div>
+
+            <div class="museum-item">
+                <img src="https://lh3.googleusercontent.com/d/1GbjjPxQ6SZl9f_RYbYGKetasMIFiuseQ?w=800" class="museum-img" 
+alt="Eksplorasi Kaca">
+                <h3 class="museum-title">Eksplorasi Workshop (2022)</h3>
+                <p class="museum-desc">Tantangan baru bagi kami untuk memberikan kesempatan bagi khalayak umum untuk menyalurkan kreatifitas ke atas media yang umum ditemui di kehidupan sehari-hari. contoh aja loh ini wkwk</p>
+            </div>
+
+            <div class="museum-item photo-only">
+                <img src="https://lh3.googleusercontent.com/d/121-WE8YF9quyG-Z1BXCVnU-7rXmQClID?w=800" class="museum-img" alt="Teko Biru">
+            </div>
+
         </div>
+    </div>
 
-        <div id="page-beli" class="page">
-            <div class="buy-card">
-                <div class="buy-icon"><i class="fa-brands fa-whatsapp"></i></div>
-                <h2>Pemesanan</h2>
-                <p>Untuk menjaga eksklusivitas, konsultasi motif, dan ketersediaan stok souvenir massal, pemesanan dilakukan langsung dengan mudah via WhatsApp resmi kami.</p>
-                
-                <div class="contact-box">
-                    <div class="contact-name">Admin Nyentrik Indonesia</div>
-                    <div class="contact-number">+62 857-0108-3931</div>
+    <div id="order" class="view-page">
+        <div class="page-card">
+     
+            <a href="#home" class="back-btn"><i class="fa fa-arrow-left"></i> Kembali</a>
+            <br>
+            <i class="fab fa-whatsapp wa-animate"></i>
+            <h2 style="margin-bottom: 12px; font-size: 1.3rem;">Konsultasi & Pemesanan</h2>
+            <div class="order-box">
+                <p>Untuk menjaga eksklusivitas, konsultasi motif, dan ketersediaan stok, pemesanan dilakukan langsung dengan mudah via 
+WhatsApp resmi kami.</p>
+                <hr style="margin: 15px 0; border: none; border-top: 1px solid #eee;">
+                <p style="font-weight: 700;
+font-size: 1.2rem; color: var(--primary-color);">+62 857-0108-3931</p>
+            </div>
+            <a href="https://wa.me/6285701083931" class="social-link" style="width: auto;
+background: var(--wa-green); padding: 0 30px; border-radius: 30px; margin-top: 20px; font-size: 0.9rem; text-decoration: none;
+color: white;" onclick="closeModal()">
+                <i class="fab fa-whatsapp" style="margin-right: 8px;"></i> Hubungi WhatsApp
+            </a>
+        </div>
+    </div>
+
+    <div id="address" class="view-page">
+        <div class="page-card">
+            <a href="#home" class="back-btn"><i class="fa fa-arrow-left"></i> Kembali</a>
+            <h1 style="font-family: 'Playfair Display';
+color: var(--accent-color); margin-bottom: 8px; font-size: 1.6rem;">Galeri & Workshop</h1>
+            <p style="font-weight: 600;">Nyentrik Indonesia</p>
+                <p style="font-size: 0.8rem;
+opacity: 0.9;">Tegalrejo, Kec. Tegalrejo, Kota Yogyakarta, Daerah Istimewa Yogyakarta, 55244</p>
+            <div class="map-box" onclick="window.open('https://maps.app.goo.gl/VuKF1wRKq2tCdPaq5?g_st=aw', '_blank')">
+                <i class="fa-solid fa-map-location-dot" style="font-size: 40px;
+color: var(--primary);"></i>
+                <p style="font-weight: 600;">Google Maps</p>
+                <p style="font-size: 0.8rem;
+opacity: 0.9;">Klik di Sini Untuk Lokasi Lebih Akurat</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="searchResults" class="view-page">
+        <div class="main-content" style="padding-top: 20px;">
+            <a href="#home" class="back-btn"><i class="fa fa-arrow-left"></i> Kembali</a>
+            <h2 id="searchTitle" class="section-title">Hasil Pencarian</h2>
+            <div class="product-grid" id="searchGrid"></div>
+      
+        </div>
+    </div>
+
+    <div id="detailModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal()">×</span>
+            <img id="modalImg" src="" style="width:100%;
+height: auto; object-fit: cover;">
+            <div style="padding: 20px;">
+                <div class="product-tag-row" style="font-size: 0.8rem;
+margin-bottom: 10px;">
+                    <span class="tag-best"><i class="fa fa-fire"></i></span>
+                    <span class="tag-sold">| 100+ Terjual</span>
                 </div>
-
-                <a href="https://wa.me/6285701083931?text=Halo%20Nyentrik%20Indonesia,%20saya%20tertarik%20dengan%20produk%20Anda" target="_blank" class="btn-order-now">
-                    <i class="fa-brands fa-whatsapp"></i> Chat via WhatsApp
+                <h2 id="modalTitle" style="font-family: 'Playfair Display';
+font-size: 1.2rem;"></h2>
+                <p class="price-req" style="margin: 5px 0 15px 0;">Tanyakan?</p>
+                <p id="modalDesc" style="color: #666;
+font-size: 0.85rem; margin-bottom: 20px;"></p>
+                <a href="#order" class="social-link" style="width: 100%;
+background: var(--wa-green); border-radius: 10px; text-decoration: none;" onclick="closeModal()">
+                    <i class="fab fa-whatsapp" style="margin-right: 8px;"></i> Chat via WhatsApp
                 </a>
             </div>
         </div>
-
-        <div id="page-alamat" class="page">
-            <div class="address-card">
-                <h2>Galeri & Workshop</h2>
-                <div class="address-details">
-                    <i class="fa-solid fa-location-dot"></i>
-                    <div>
-                        <strong>Nyentrik Indonesia</strong><br>
-                        Jl. Rumahnya Cinta Pokonya aku gatau,<br>
-                        Kota Yogyakarta, Daerah Istimewa Yogyakarta, 11223
-                    </div>
-                </div>
-                
-                <a href="https://maps.app.goo.gl/i7qpBxrPqQLzF5BAA" target="_blank" style="text-decoration: none;">
-                    <div class="map-placeholder" style="cursor: pointer;">
-                        <i class="fa-solid fa-map-location-dot" style="font-size: 40px; color: var(--primary);"></i>
-                        <span style="font-weight: 600; color: var(--dark);">Buka di Google Maps</span>
-                        <span style="font-size: 13px; color: var(--text-muted);">Buka di Google Maps untuk lokasi lebih akurat</span>
-                    </div>
-                </a>
-            </div>
-        </div>
-
-    </container>
-
-    <footer>
-        <p>© 2026 Nyentrik Indonesia. All Rights Reserved.</p>
-    </footer>
+    </div>
 
     <script>
-        const PRODUCTS_DATA = [
-            {
-                id: 1,
-                title: "Cangkir",
-                price: "Tanyakan Harga?",
-                badge: "Terlaris",
-                sold: "100+ terjual",
-                desc: "Ini pokonya contoh deskripsinya ya, aku gangerti tuh produk berdasarkan desain custom atau Nyentrik Indonesia yang sediain desainnya untuk dipilih.\n\nPokonya ya kalo ada waktu, kasih aku list produk sama deskripsinya lah yaa gitu aja, hehe.",
-                image: "https://lh3.googleusercontent.com/d/10b_8p1pmmJ-89QYUl83UAd4-OaGrNdKi?auto=format&fit=crop&w=500&q=80"
-            },
-            {
-                id: 2,
-                title: "Kaleng Kerupuk",
-                price: "Tanyakan Harga?",
-                badge: "Terlaris",
-                sold: "40+ terjual",
-                desc: "Ini pokonya contoh deskripsinya ya, aku gangerti tuh produk berdasarkan desain custom atau Nyentrik Indonesia yang sediain desainnya untuk dipilih.\n\nPokonya ya kalo ada waktu, kasih aku list produk sama deskripsinya lah yaa gitu aja, hehe.",
-                image: "https://lh3.googleusercontent.com/d/1g4PcB0Zx2TFIi-jqfi3nyXV-ypkUfLQE?auto=format&fit=crop&w=500&q=80"
-            },
-            {
-                id: 3,
-                title: "Tumblr lukis",
-                price: "Tanyakan Harga?",
-                badge: "Terlaris",
-                sold: "500+ terjual",
-                desc: "Ini pokonya contoh deskripsinya ya, aku gangerti tuh produk berdasarkan desain custom atau Nyentrik Indonesia yang sediain desainnya untuk dipilih.\n\nPokonya ya kalo ada waktu, kasih aku list produk sama deskripsinya lah yaa gitu aja, hehe.",
-                image: "https://lh3.googleusercontent.com/d/192jQhoP6STwr6fhgXQEW6ItAr1xqa-5x?auto=format&fit=crop&w=500&q=80"
-            },
-            {
-                id: 4,
-                title: "Sendok Lukis",
-                price: "Tanyakan Harga?",
-                badge: "Terlaris",
-                sold: "15 terjual",
-                desc: "Ini pokonya contoh deskripsinya ya, aku gangerti tuh produk berdasarkan desain custom atau Nyentrik Indonesia yang sediain desainnya untuk dipilih.\n\nPokonya ya kalo ada waktu, kasih aku list produk sama deskripsinya lah yaa gitu aja, hehe.",
-                image: "https://lh3.googleusercontent.com/d/1A5c-YorUNDq9a_Bec0hKPPtLV_GqpDUM?auto=format&fit=crop&w=500&q=80"
-            },
-            {
-                id: 5,
-                title: "Talenan Lukis",
-                price: "Tanyakan Harga?",
-                badge: "Terlaris",
-                sold: "500+ terjual",
-                desc: "Ini pokonya contoh deskripsinya ya, aku gangerti tuh produk berdasarkan desain custom atau Nyentrik Indonesia yang sediain desainnya untuk dipilih.\n\nPokonya ya kalo ada waktu, kasih aku list produk sama deskripsinya lah yaa gitu aja, hehe.",
-                image: "https://lh3.googleusercontent.com/d/1ORc4pT3IlcfbhLUpj0LzmB1Ngv67euFF?auto=format&fit=crop&w=500&q=80"
-            }
+        const products = [
+            
+{ id: 1, cat: 'Kaleng', name: 'Kaleng Kerupuk Lukis', img: 'https://lh3.googleusercontent.com/d/1pqVgvQV2V9qRTCJbclKXFQHUeIJ0jyRO?w=500', desc: 'Abadikan momen berharga masa bakti dengan kado perpisahan yang bener-bener personal dan berkesan. Melalui jasa lukis custom ini, Anda bebas menentukan karakter wajah, seragam dinas kebanggaan, hingga latar belakang landmark kota kenangan yang ingin dituangkan di atas media kaleng kerupuk ikonik. Setiap unit dikerjakan secara manual (hand-painted) oleh seniman kami, sehingga menghasilkan karya seni eksklusif dengan tekstur cat yang nyata dan berkelas. Sangat fungsional sebagai wadah camilan sekaligus elemen dekorasi yang akan selalu mengingatkan pada dedikasi dan masa kerja di kantor. Berikan penghormatan terakhir yang spesial dan hanya ada satu di dunia sebagai kenang-kenangan yang tidak akan pernah terlupakan. <br><br><b>Ayo pesan dan request desain lukisan sesuai keinginanmu.</b>' },
+            { id: 2, cat: 'Kaleng', name: 'Kaleng Kerupuk Lukis', img: 'https://lh3.googleusercontent.com/d/1YCZHb51aFQ3z5W8MAh6RbeHuBxZSgn1o?w=500', desc: 'Ciptakan suasana meja makan yang lebih hangat dan ceria dengan kaleng kerupuk sultan yang mencerminkan identitas keluarga Anda. Di sini, Anda bebas meminta ilustrasi seluruh anggota keluarga lengkap dengan nama masing-masing dan pilihan warna dasar yang paling cocok dengan interior rumah. Mulai dari motif latar batik yang elegan hingga pemandangan depan rumah yang penuh kenangan, semua bisa dilukis sesuai keinginan. Karya seni tangan ini bukan sekadar wadah penyimpanan biasa, melainkan ikon dekorasi rumah yang unik dan sangat Instagramable. Pilihan paling tepat untuk hadiah pindah rumah (housewarming) atau kado ulang tahun pernikahan yang penuh makna dan sangat estetik. <br><br><b>Ayo pesan dan request desain lukisan sesuai keinginanmu.' },
+            { id: 3, cat: 'Enamel', name: 'Cangkir Enamel', img: 'https://lh3.googleusercontent.com/d/1Ng-GeZP9nEhTmcExgz2Ve13Fd_DcINai?w=500', desc: 'Berikan hadiah yang bener-bener spesial untuk orang-orang tersayang dengan cangkir enamel yang setiap unitnya bisa memiliki nama dan karakter berbeda-beda. Sangat ideal untuk souvenir ulang tahun anak agar hadiah yang diberikan tidak akan tertukar dan memberikan kesan mendalam bagi setiap tamu yang menerimanya. Anda bebas menentukan tema pakaian karakter, hobi, hingga pilihan warna cerah yang disukai si kecil. Material enamel yang ringan dan tahan banting menjadikannya kado fungsional yang bisa dipakai sehari-hari. Lengkap dengan kemasan besek anyaman bambu yang natural, souvenir ini siap memberikan kesan mewah dan niat tanpa Anda perlu repot menyiapkan pembungkus tambahan lagi. <br><br><b>Ayo pesan dan request desain lukisan sesuai keinginanmu.' },
+            { id: 4, cat: 'Enamel', name: 'Cangkir Enamel', img: 'https://lh3.googleusercontent.com/d/1VGR1hA7WYXkBGOKRcfNCA4z51hx4b8_v?w=500', desc: 'Hadirkan kado pernikahan yang benar-benar mewakili perjalanan cinta sepasang pengantin melalui set cangkir couple yang romantis. Anda bebas memesan ilustrasi pasangan mengenakan pakaian adat Nusantara mulai dari Jawa, Sunda, Minang, hingga gaya modern lengkap dengan detail nama dan tanggal spesial mereka. Sentuhan lukis tangan pada media enamel vintage ini memberikan kesan klasik namun tetap manis untuk dijadikan pajangan maupun digunakan saat bersantai berdua. Kado ini adalah pilihan terbaik bagi Anda yang ingin memberikan sesuatu yang kental akan budaya, sangat personal, dan pasti akan disimpan terus sebagai saksi sejarah hari bahagia mereka. <br><br><b>Ayo pesan dan request desain lukisan sesuai keinginanmu.' },
+            { id: 5, cat: 'Enamel', name: 'Cangkir Enamel', img: 'https://lh3.googleusercontent.com/d/12QgDn7HQo_FXF3OG72Bewbs5HkgkFqcY?w=500', desc: 'Rayakan keberagaman budaya Indonesia melalui koleksi cangkir karakter yang kaya akan detail dan identitas lokal. Anda dapat memesan berbagai variasi karakter manusia dengan beragam pakaian tradisional, profesi, hingga gaya rambut unik yang mencerminkan kekayaan Nusantara. Setiap cangkir dikerjakan secara manual satu per satu, memberikan nilai seni tinggi yang jauh lebih eksklusif dibandingkan produk cetakan pabrik. Sangat cocok bagi pecinta barang unik yang ingin memiliki koleksi perlengkapan minum berkarakter atau sebagai oleh-oleh khas yang menunjukkan kebanggaan akan warisan budaya bangsa. Miliki karya seni kecil yang fungsional dan penuh cerita ini untuk menemani momen ngopi atau ngeteh Anda setiap hari. <br><br><b>Ayo pesan dan request desain lukisan sesuai keinginanmu.' },
+            { id: 6, cat: 'Enamel', name: 'Teko Lukis', img: 'https://lh3.googleusercontent.com/d/1Kuw2OdlcZmCmiaHe6Y9XpwAysoM3jxgX?w=500', desc: 'Hadirkan sentuhan kasih yang berkesan dengan set alat minum lukis eksklusif dari Nyentrik Indonesia yang memadukan tradisi dan seni dalam satu harmoni. Produk ini menampilkan lukisan tangan yang apik tentang sepasang pengantin dalam balutan busana adat Jawa di depan pelaminan, lengkap dengan tulisan "Happy Wedding" yang membuatnya sangat spesial sebagai kado pernikahan. Terdiri dari teko, cangkir, piring, serta wadah kerupuk kaleng ikonik berwarna kuning cerah, setiap goresan kuasnya memberikan nuansa hangat dan unik yang tidak akan ditemukan di tempat lain. <br><br><b>Ayo pesan dan request desain lukisan sesuai keinginanmu.' },
+            { id: 7, cat: 'Enamel', name: 'Teko Lukis', img: 'https://lh3.googleusercontent.com/d/1w7LaNcz3KyI5nv47LAtjOfYHRFGMKZrk?w=500', desc: 'Set alat minum lukis dari Nyentrik Indonesia ini hadir dengan warna hijau yang segar, menampilkan lukisan tangan karakter sepasang pengantin dalam busana adat yang manis dan penuh keceriaan. Desainnya yang khas menggambarkan kebahagiaan momen pernikahan, lengkap dengan detail pita bertuliskan "Happy Wedding" yang memberikan kesan personal dan hangat. Terdiri dari teko dan dua cangkir kaleng yang awet, set ini menjadi pilihan kado yang unik sekaligus fungsional untuk merayakan hari istimewa orang terdekat. <br><br><b>Ayo pesan dan request desain lukisan sesuai keinginanmu.' },
+            { id: 8, cat: 'Enamel', name: 'Cangkir Enamel', img: 'https://lh3.googleusercontent.com/d/1BaqXz-RWGIm5gH5RZZCVRyoojJBeSBLe?w=500', desc: 'Koleksi cangkir enamel dari Nyentrik Indonesia ini tampil sangat personal dengan sentuhan lukis tangan yang menggambarkan karakter wajah dari berbagai profil individu yang ceria. Setiap cangkir dibuat unik dengan tambahan nama pemiliknya, seperti Ari, Tantri, hingga Dudun, yang dipadukan dengan ilustrasi kartun warna-warni yang menggemaskan. Dengan material kaleng yang kuat dan desain kustom yang kreatif, produk ini sangat cocok dijadikan sebagai souvenir kantor, kado ulang tahun sahabat, atau identitas diri yang unik saat berkumpul bersama teman-teman. <br><br><b>Ayo pesan dan request desain lukisan sesuai keinginanmu.' },
+            { id: 9, cat: 'Kaleng', name: 'Kaleng Kerupuk Lukis', img: 'https://lh3.googleusercontent.com/d/1vG_G3EFuoqDNgOYquObRBp9GGEtbOx6k?w=500', desc: 'Wadah kerupuk kaleng dari Nyentrik Indonesia ini tampil memikat dengan lukisan tangan yang mengangkat keindahan budaya Bali, menampilkan ikon Candi Bentar dan suasana alam yang tenang di bawah langit biru cerah. Ilustrasi karakter perempuan dalam busana adat yang dikelilingi pepohonan dan awan estetik memberikan kesan artistik sekaligus tradisional pada furnitur fungsional ini. Dengan warna biru yang dominan dan sentuhan seni yang mendetail, produk lukis ini sangat cocok untuk mempercantik sudut ruangan atau dijadikan pajangan unik yang penuh cerita budaya. <br><br><b>Ayo pesan dan request desain lukisan sesuai keinginanmu.' },
+            { id: 10, cat: 'Enamel', name: 'Cangkir Enamel', img: 'https://lh3.googleusercontent.com/d/1f54GgzDB5_mU8BfRAbPQJXKXluYVaZOV?w=500', desc: 'Cangkir enamel cantik dari Nyentrik Indonesia ini hadir dengan pesona alam melalui lukisan tangan bermotif bunga mawar merah muda yang sedang mekar dengan anggun. Perpaduan warna biru elektrik yang berani serta detail dedaunan hijau dan corak tanaman monstera memberikan kesan tropis yang segar dan artistik pada setiap sesapan minuman Anda. Dilengkapi dengan tutup yang serasi, produk lukis ini sangat pas untuk menemani waktu santai di rumah atau dijadikan hadiah spesial yang membawa nuansa taman bunga ke dalam genggaman. <br><br><b>Ayo pesan dan request desain lukisan sesuai keinginanmu.' },
+            { id: 11, cat: 'Enamel', name: 'Set Alat Minum', img: 'https://lh3.googleusercontent.com/d/15L-5LM93QlhNIErskGVATBItjqeF32XG?w=500', desc: 'Set alat minum dari Nyentrik Indonesia ini tampil memukau dengan lukisan tangan yang menggambarkan deretan bangunan unik menyerupai suasana kota kuno atau pemukiman Mediterania yang penuh warna. Perpaduan teko, cangkir, dan piring kecil berwarna dasar merah bata ini terlihat sangat artistik berkat detail jendela dan kubah warna-warni yang dilukis dengan penuh ketelitian. Setiap goresan pada material kaleng ini memberikan kesan klasik sekaligus modern, menjadikannya pilihan sempurna untuk melengkapi koleksi alat makan Anda atau sebagai hadiah istimewa bagi pecinta seni visual yang fungsional. <br><br><b>Ayo pesan dan request desain lukisan sesuai keinginanmu.' },
+            { id: 12, cat: 'Pajangan', name: 'Set Alat Minum', img: 'https://lh3.googleusercontent.com/d/1EHYry7hflV732F4rXDBE6x1JoA1_FGOZ?w=500', desc: 'Koleksi produk lukis dari Nyentrik Indonesia ini menghadirkan keceriaan melalui berbagai perlengkapan minum yang dihiasi lukisan tangan bertema dunia satwa yang lucu serta ikon budaya dan pemandangan alam yang penuh warna. Mulai dari botol minum dengan tutup kayu yang estetik hingga cangkir enamel bermotif karakter hewan menggemaskan seperti singa, jerapah, dan kelinci, setiap produk dirancang untuk memberikan sentuhan seni yang personal dalam keseharian Anda. Dengan detail lukisan yang rapi dan variasi desain yang beragam, koleksi ini menjadi pilihan tepat bagi siapa saja yang ingin memiliki barang fungsional namun tetap artistik dan penuh karakter. <br><br><b>Ayo pesan dan request desain lukisan sesuai keinginanmu.' },
+            { id: 13, cat: 'Enamel', name: 'Cangkir Enamel', img: 'https://lh3.googleusercontent.com/d/121-WE8YF9quyG-Z1BXCVnU-7rXmQClID?w=500', desc: 'Koleksi cangkir enamel dari Nyentrik Indonesia ini hadir sebagai pilihan suvenir yang hangat dan berkesan, menampilkan lukisan tangan bertema rumah adat tradisional dan pepohonan yang asri. Setiap cangkirnya dibalut dengan warna-warni ceria serta tulisan kustom yang memberikan sentuhan personal bagi para penerimanya. Dikemas rapi menggunakan wadah anyaman besek yang ramah lingkungan, produk lukis ini sangat cocok untuk dijadikan kenang-kenangan acara syukuran atau pernikahan yang ingin menonjolkan nuansa budaya dengan cara yang unik dan artistik. <br><br><b>Ayo pesan dan request desain lukisan sesuai keinginanmu.' },
+            { id: 14, cat: 'Enamel', name: 'Set Alat Minum', img: 'https://lh3.googleusercontent.com/d/14Uy02OFoZ0zPMo9Mpxxz-2cpq2u2IFHp?w=500', desc: 'Set alat minum lukis dari Nyentrik Indonesia ini tampil menggemaskan dengan tema kegiatan berkebun yang penuh warna di bawah langit biru yang cerah. Lukisan tangannya menggambarkan karakter anak-anak yang ceria sedang membawa peralatan kebun di tengah pemandangan perbukitan hijau dan awan mendung estetik yang memberikan kesan hidup pada setiap kepingnya. Terdiri dari teko, cangkir, serta piring kecil yang serasi, set berbahan enamel ini sangat cocok untuk menemani waktu minum teh bersama keluarga atau dijadikan kado unik yang membangkitkan semangat dan keceriaan di rumah. <br><br><b>Ayo pesan dan request desain lukisan sesuai keinginanmu.' },
+            { id: 15, cat: 'Pajangan', name: 'Payung Lukis', img: 'https://lh3.googleusercontent.com/d/1OemmEbOZ3HZLmPhnpdXopmOvri7SyfCC?w=500', desc: 'Hadirkan keceriaan di setiap cuaca dengan Payung Lukis Eksklusif dari Nyentrik Indonesia, menampilkan lukisan tangan karakter anak-anak yang menggemaskan mengenakan pakaian adat Nusantara yang penuh warna. Setiap goresan kuas pada payung ini adalah bentuk cinta dan keunikan seni lukis tangan yang tak tertandingi, siap menemani petualangan Anda di bawah sinar matahari maupun hujan, sambil merayakan keberagaman budaya Indonesia dengan gaya yang ceria dan berbeda dari yang lain. <br><br><b>Ayo pesan dan request desain lukisan sesuai keinginanmu.' },
+            { id: 16, cat: 'Enamel', name: 'Teko Lukis', img: 'https://lh3.googleusercontent.com/d/15Cuw9h-GsX7VEB6v7L7nJcb91jNqS5EN?w=500', desc: 'Set teko dan cangkir lukis dari Nyentrik Indonesia ini hadir dengan warna biru toska yang menawan, menampilkan lukisan tangan karakter unik bergaya klasik yang sedang berdiri di bawah deretan lampu jalan estetik. Detail ilustrasinya yang penuh warna bercerita tentang kehangatan sebuah perjalanan, sangat serasi dengan latar pemandangan alam yang hijau dan asri. Terbuat dari bahan enamel yang kuat, produk lukis ini bukan sekadar alat minum biasa, melainkan karya seni fungsional yang siap menambah kesan artistik dan istimewa saat Anda menikmati waktu bersantai di luar ruangan. <br><br><b>Ayo pesan dan request desain lukisan sesuai keinginanmu.' },
+            { id: 17, cat: 'Enamel', name: 'Cangkir Enamel', img: 'https://lh3.googleusercontent.com/d/1t8tYrkThPejFls98FyWy7ouoH3Ddmsg2?w=500', desc: 'Koleksi cangkir enamel dari Nyentrik Indonesia ini tampil memikat dengan sentuhan lukis tangan yang menghadirkan karakter Punakawan yang ikonik serta motif bunga-bunga cantik yang berwarna-warni. Setiap cangkirnya memiliki keunikan tersendiri, mulai dari karakter wayang yang jenaka hingga corak floral yang estetis di atas latar warna ungu, krem, dan putih yang lembut. Dengan material kaleng yang awet dan desain seni tradisional yang dikemas secara modern, produk lukis ini sangat cocok untuk melengkapi koleksi alat minum Anda atau dijadikan buah tangan yang sarat akan makna budaya. <br><br><b>Ayo pesan dan request desain lukisan sesuai keinginanmu.' },
+            { id: 18, cat: 'Kayu', name: 'Spatula', img: 'https://lh3.googleusercontent.com/d/12ExeXUtkgcwZA2gdj7oI27Ba4_SPOUsw?w=500', desc: 'Spatula kayu dari Nyentrik Indonesia ini hadir dengan sentuhan seni yang manis, menampilkan lukisan tangan bermotif bunga merah muda yang cantik dan potongan buah kiwi yang segar pada bagian gagangnya. Perpaduan material kayu alami dengan cat warna-warni yang detail memberikan kesan artistik dan ceria saat digunakan di dapur. Selain berfungsi sebagai alat masak yang aman, produk lukis ini juga sangat estetik untuk dijadikan pajangan atau kado spesial bagi pecinta peralatan dapur yang unik dan penuh karakter. <br><br><b>Ayo pesan dan request desain lukisan sesuai keinginanmu.' },
+            { id: 19, cat: 'Kayu', name: 'Sendok Garpu', img: 'https://lh3.googleusercontent.com/d/1FGtUzgNyG2MZ8QddnpVTNaFS1TVZQ904?w=500', desc: 'Set sendok dan garpu kayu dari Nyentrik Indonesia ini tampil sangat manis dengan sentuhan lukis tangan bermotif bunga kecil dan polkadot putih yang minimalis pada bagian gagangnya. Perpaduan warna ungu tua dan ungu muda yang lembut memberikan kesan feminin dan artistik pada material kayu alami yang hangat. Selain fungsional untuk menemani waktu makan Anda, produk lukis ini juga sangat cantik dijadikan sebagai pelengkap dekorasi meja makan atau hadiah unik bagi pecinta barang-barang kerajinan tangan yang penuh detail. <br><br><b>Ayo pesan dan request desain lukisan sesuai keinginanmu.' },
+            { id: 20, cat: 'Kaleng', name: 'Kaleng Kerupuk Lukis', img: 'https://lh3.googleusercontent.com/d/1bfN9uD0wyD38iPltBiWsajmoi2m79UnZ?w=500', desc: 'Wadah kerupuk kaleng dari Nyentrik Indonesia ini tampil mencolok dengan warna hijau limau yang segar, dihiasi lukisan tangan bertema pemukiman perkotaan yang penuh warna dan artistik. Setiap sisi kaleng hingga bagian tutupnya menampilkan deretan gedung dan rumah mungil dengan detail jendela serta atap warna-warni yang memberikan kesan ceria dan modern. Produk lukis ini tidak hanya berfungsi sebagai tempat penyimpanan yang kokoh, tetapi juga hadir sebagai elemen dekorasi unik yang siap menghidupkan suasana di ruang tamu atau dapur Anda. <br><br><b>Ayo pesan dan request desain lukisan sesuai keinginanmu.' },
+            { id: 21, cat: 'Kaleng', name: 'Kaleng Kerupuk Lukis', img: 'https://lh3.googleusercontent.com/d/1jfAkTfD3g8w45UqGgUnwDvHZvilzpnd9?w=500', desc: 'Wadah kerupuk kaleng dari Nyentrik Indonesia ini tampil mencolok dengan warna hijau limau yang segar, dihiasi lukisan tangan bertema pemukiman perkotaan yang penuh warna dan artistik. Setiap sisi kaleng hingga bagian tutupnya menampilkan deretan gedung dan rumah mungil dengan detail jendela serta atap warna-warni yang memberikan kesan ceria dan modern. Produk lukis ini tidak hanya berfungsi sebagai tempat penyimpanan yang kokoh, tetapi juga hadir sebagai elemen dekorasi unik yang siap menghidupkan suasana di ruang tamu atau dapur Anda. <br><br><b>Ayo pesan dan request desain lukisan sesuai keinginanmu.' },
+            { id: 22, cat: 'Enamel', name: 'Set Alat Minum', img: 'https://lh3.googleusercontent.com/d/1zZzuDOjsOlJ7UgpIk8bV367bOePEhYHk?w=500', desc: 'Set alat minum dari Nyentrik Indonesia ini tampil anggun dengan warna hijau toska yang pekat, menampilkan lukisan tangan bertema budaya Jawa yang kental melalui ilustrasi karakter perempuan di depan rumah joglo serta alat musik gong tradisional. Perpaduan antara teko dan cangkir enamel yang kokoh dengan seni lukis yang mendetail ini menciptakan nuansa klasik yang hangat di setiap sesapan minuman Anda. Sangat pas untuk melengkapi koleksi perabotan estetik di rumah atau sebagai bingkisan spesial yang membawa pesan pelestarian budaya dalam tampilan yang lebih ceria dan modern. <br><br><b>Ayo pesan dan request desain lukisan sesuai keinginanmu.' },
+            { id: 23, cat: 'Enamel', name: 'Cangkir Enamel', img: 'https://lh3.googleusercontent.com/d/1eSdZoGNrNXbujMTtvdIIhYxvvavAfMq7?w=500', desc: 'Sepasang cangkir enamel dari Nyentrik Indonesia ini tampil memikat dengan lukisan tangan bertema budaya Jawa yang kental, menampilkan ilustrasi rumah adat joglo yang ikonik serta elemen musik tradisional gong. Perpaduan warna hijau toska yang teduh dengan detail lukisan karakter yang manis pada setiap cangkir dan piring kecilnya menciptakan nuansa klasik yang hangat sekaligus artistik. Set produk lukis ini sangat cocok untuk menemani momen minum santai Anda atau dijadikan pilihan kado unik yang sarat akan nilai tradisi namun tetap terlihat ceria dan modern. <br><br><b>Ayo pesan dan request desain lukisan sesuai keinginanmu.' },
+            { id: 24, cat: 'Pajangan', name: 'Botol Minum', img: 'https://lh3.googleusercontent.com/d/16e_K81hKjBe8Wt8qbhk9v_96oEoVtF-P?w=500', desc: 'Botol minum estetik dari Nyentrik Indonesia ini hadir dengan lukisan tangan yang menawan, menampilkan deretan bangunan kota warna-warni yang artistik serta ilustrasi karakter yang sedang melukis di taman. Setiap detail gambarnya memberikan kesan ceria dan personal, sangat cocok untuk melengkapi gaya hidup Anda yang dinamis atau dijadikan kado spesial yang unik. Dengan perpaduan warna yang cerah dan tutup bermotif kayu yang elegan, produk lukis fungsional ini siap menemani aktivitas harian Anda sambil membawa sentuhan seni yang hangat ke mana pun Anda pergi. <br><br><b>Ayo pesan dan request desain lukisan sesuai keinginanmu.' },
+            { id: 25, cat: 'Kayu', name: 'Talenan', img: 'https://lh3.googleusercontent.com/d/1p9i7XKRVUTJlUHEYGFidoxu5jqCeHS3J?w=500', desc: 'Talenan kayu dekoratif dari Nyentrik Indonesia ini tampil memikat dengan lukisan tangan seorang wanita anggun yang mengenakan kebaya tradisional lengkap dengan konde dan hiasan kepala yang detail. Berlatar warna biru toska yang cerah dan motif bunga-bunga kecil yang lembut, produk lukis ini tidak hanya menonjolkan keindahan budaya Nusantara, tetapi juga hadir sebagai karya seni unik untuk mempercantik sudut dapur atau ruang tamu Anda. Material kayunya yang berkualitas dipadukan dengan karakter lukisan yang ceria menjadikannya pilihan sempurna bagi Anda yang mencari hiasan rumah yang artistik, personal, dan sarat akan nilai tradisi Indonesia. <br><br><b>Ayo pesan dan request desain lukisan sesuai keinginanmu.' }
         ];
 
-        function renderKatalog() {
-            const containers = ['product-list-beranda', 'product-list-katalog'];
-            
-            containers.forEach(containerId => {
-                const container = document.getElementById(containerId);
-                if(!container) return;
-                
-                container.innerHTML = '';
-                const sourcePage = containerId.includes('beranda') ? 'beranda' : 'produk';
-                
-                PRODUCTS_DATA.forEach(prod => {
-                    const card = document.createElement('div');
-                    card.className = 'product-card';
-                    card.onclick = () => openProductDetail(prod.id, sourcePage);
-                    card.innerHTML = `
-                        <div class="prod-img-box">
-                            <img src="${prod.image}" alt="${prod.title}">
-                        </div>
-                        <div class="prod-info">
-                            <div class="prod-title">${prod.title}</div>
-                            <div class="prod-price">${prod.price}</div>
-                            <div class="prod-meta">
-                                <span class="prod-badge">${prod.badge}</span>
-                                <span>${prod.sold}</span>
-                            </div>
-                        </div>
-                    `;
-                    container.appendChild(card);
-                });
-            });
+        let slideIndex = 0;
+        function autoSlide() {
+            const track = document.getElementById('aboutSlider');
+            if(track) {
+                const totalSlides = track.children.length;
+          
+                slideIndex = (slideIndex + 1) % totalSlides;
+                track.style.transform = `translateX(-${slideIndex * 100}%)`;
+            }
         }
+        setInterval(autoSlide, 3500); 
 
-        function openProductDetail(id, fromPage) {
-            const product = PRODUCTS_DATA.find(p => p.id === id);
-            if(!product) return;
+        function route() {
+            const hash = window.location.hash || '#home';
+      
+            const pages = document.querySelectorAll('.view-page');
+            const waFloat = document.getElementById('waFloat');
+            pages.forEach(p => p.classList.remove('active'));
 
-            const detailContent = document.getElementById('product-detail-content');
-            detailContent.innerHTML = `
-                <div class="detail-img-side">
-                    <img src="${product.image}" alt="${product.title}">
-                </div>
-                <div class="detail-info-side">
-                    <h2>${product.title}</h2>
-                    <div class="detail-price-box">${product.price}</div>
-                    <div class="detail-desc-box">
-                        <h3>Deskripsi Produk</h3>
-                        <p>${product.desc}</p>
+            if (hash === '#order' || hash === '#about' || hash === '#journey') { 
+                waFloat.style.display = 'none'; 
+            } else { 
+   
+               waFloat.style.display = 'flex';
+}
+
+            if (hash === '#home') {
+                document.getElementById('home').classList.add('active');
+renderProducts(products, 'mainGrid');
+            } else if (hash === '#about') {
+                document.getElementById('about').classList.add('active');
+} else if (hash === '#journey') {
+                document.getElementById('journey').classList.add('active');
+} else if (hash === '#order') {
+                document.getElementById('order').classList.add('active');
+} else if (hash === '#address') {
+                document.getElementById('address').classList.add('active');
+} else if (hash.startsWith('#search=')) {
+                const q = decodeURIComponent(hash.split('=')[1]).toLowerCase();
+const filtered = products.filter(p => p.name.toLowerCase().includes(q) || p.cat.toLowerCase().includes(q));
+                document.getElementById('searchResults').classList.add('active');
+                document.getElementById('searchTitle').innerText = `Hasil untuk: "${q}"`;
+                renderProducts(filtered, 'searchGrid');
+} else if (hash.startsWith('#category=')) {
+                const c = hash.split('=')[1];
+const filtered = products.filter(p => p.cat === c);
+                document.getElementById('searchResults').classList.add('active');
+                renderProducts(filtered, 'searchGrid');
+}
+            window.scrollTo(0,0);
+}
+
+        window.addEventListener('hashchange', route);
+        window.addEventListener('load', route);
+function renderProducts(data, target) {
+            const grid = document.getElementById(target);
+if (data.length === 0) {
+                grid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; padding: 40px; font-size: 0.9rem;">Karya tidak ditemukan.</p>';
+return;
+            }
+            grid.innerHTML = data.map(p => `
+                <div class="product-card" onclick="openModal(${p.id})">
+                    <img src="${p.img}" class="product-img">
+                    <div class="product-info">
+                      
+                        <div class="product-tag-row">
+                            <span class="tag-best"><i class="fa fa-fire"></i></span>
+                            <span class="tag-sold">| 100+ Terjual</span>
+                        </div>
+          
+                        <div class="product-name">${p.name}</div>
+                        <div class="price-req">Tanyakan?</div>
                     </div>
-                    <button class="btn-order-now" onclick="navigateTo('beli')">
-                        <i class="fa-solid fa-comment-dollar"></i> Pesan Produk Lewat WhatsApp
-                    </button>
                 </div>
-            `;
+            `).join('');
+}
 
-            const backBtn = document.getElementById('btn-back-logic');
-            backBtn.onclick = () => navigateTo(fromPage);
-            backBtn.innerHTML = `<i class="fa-solid fa-arrow-left"></i> Kembali ke ${fromPage.charAt(0).toUpperCase() + fromPage.slice(1)}`;
-
-            const pages = document.querySelectorAll('.page');
-            pages.forEach(p => p.classList.remove('active-page'));
-            
-            document.getElementById('page-detail-produk').classList.add('active-page');
-            window.scrollTo(0, 0);
+        function handleSearch() {
+            const v = document.getElementById('searchInput').value;
+if(v) window.location.hash = `#search=${encodeURIComponent(v)}`;
         }
-
-        function navigateTo(pageId) {
-            const pages = document.querySelectorAll('.page');
-            pages.forEach(p => p.classList.remove('active-page'));
-
-            const navLinks = document.querySelectorAll('.nav-menu a');
-            navLinks.forEach(link => link.classList.remove('active'));
-
-            const targetPage = document.getElementById(`page-${pageId}`);
-            if(targetPage) {
-                targetPage.classList.add('active-page');
-            }
-
-            const activeNav = document.getElementById(`nav-${pageId}`);
-            if(activeNav) {
-                activeNav.classList.add('active');
-            }
-
-            window.scrollTo(0, 0);
+        document.getElementById('searchInput').addEventListener('keypress', e => e.key === 'Enter' && handleSearch());
+function openModal(id) {
+            const p = products.find(x => x.id === id);
+            document.getElementById('modalTitle').innerText = p.name;
+            document.getElementById('modalDesc').innerHTML = p.desc;
+            document.getElementById('modalImg').src = p.img;
+            document.getElementById('detailModal').style.display = 'block'; 
+            document.body.classList.add('modal-open'); 
+}
+        function closeModal() { 
+            document.getElementById('detailModal').style.display = 'none'; 
+            document.body.classList.remove('modal-open'); 
         }
-
-        window.onload = function() {
-            renderKatalog();
-        };
     </script>
 </body>
 </html>
